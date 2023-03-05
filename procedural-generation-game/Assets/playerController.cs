@@ -15,7 +15,11 @@ public class playerController : MonoBehaviour
     public int tentSize = 5;
     public float tentDist = 5.0f;
     public float tentWidth = 1.0f;
+    public float firstTentSize = 5.0f;
+    public float firstTentDist = 5.0f;
+    public float tentTargetDist = 1.2f;
     public float followSpeed = 1.0f;
+    public float forwardKinFollowSpd = 1.2f;
     List<List<GameObject>> tentacles = new List<List<GameObject>>();
     List<Vector3> tentTargets = new List<Vector3>();
    
@@ -37,7 +41,12 @@ public class playerController : MonoBehaviour
             for(int i = 0; i < tentSize; i++){
                 tentacles[numAnchor].Insert(0, Instantiate(tentPiece, transform.position, transform.rotation)); //insert to add to array in backwards for inverse kinematics
                 tentacles[numAnchor][0].transform.parent = transform;
-                tentacles[numAnchor][0].transform.localScale = new Vector3(transform.localScale.x - tentWidth*((float)tentSize  + 1.0f - (float)i)/(float)tentSize - 1.0f,transform.localScale.y - tentWidth*((float)tentSize + 1.0f - (float)i)/(float)tentSize - 1.0f, 1.0f);
+                if(i == 0){ //anchor segment smaller
+                    tentacles[numAnchor][0].transform.localScale = new Vector3(firstTentSize, firstTentSize, 1.0f);
+                }
+                else{
+                    tentacles[numAnchor][0].transform.localScale = new Vector3(transform.localScale.x - tentWidth*((float)tentSize  + 1.0f - (float)i)/(float)tentSize - 1.0f,transform.localScale.y - tentWidth*((float)tentSize + 1.0f - (float)i)/(float)tentSize - 1.0f, 1.0f);
+                }
             };
             // tentacles[numAnchor][0].transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             // Debug.Log(tentacles);
@@ -72,7 +81,7 @@ public class playerController : MonoBehaviour
             if(distanceToBody >= Vector3.Distance(body.transform.position + anchorOffset[offsetInd], body.transform.position)){
                 anchor.transform.position = Vector2.MoveTowards(anchor.transform.position, body.transform.position + anchorOffset[offsetInd], step*0.95f);
             }
-            else{
+            else{ //anchor rotate with body
                 anchor.transform.position = Vector2.MoveTowards(anchor.transform.position, RotatePointAroundPivot(anchor.transform.position, body.transform.position, rotationDiff.eulerAngles), step*0.95f);
             }
             //anchor.transform.position = new Vector3(0,0,0);
@@ -80,7 +89,8 @@ public class playerController : MonoBehaviour
         };
 
         for(int i = 0; i < tentacles.Count; i++){
-            float distanceToAnchor = Vector3.Distance(bodyAnchors[i].transform.position, tentacles[i][0].transform.position);
+            // float distanceToAnchor = Vector3.Distance(bodyAnchors[i].transform.position, tentacles[i][0].transform.position);
+            float distanceToAnchor = Vector3.Distance(tentacles[i][tentSize-1].transform.position, tentacles[i][0].transform.position);
             // float distanceToTarget = Vector3.Distance(tentTargets[i], tentacles[i][0].transform.position);
             // Debug.Log(distanceToAnchor);
             for( int j = tentSize-1; j >= 0; j--){
@@ -94,13 +104,15 @@ public class playerController : MonoBehaviour
                 //     tentacles[i][j].transform.up = Vector2.MoveTowards(tentacles[i][j].transform.up, tentacles[i][j].transform.position - tentacles[i][j+1].transform.position, step * followSpeed);
                 // }
 
-                if(j==0 && distanceToAnchor > tentDist * tentSize * 1.4f){
-                    tentTargets[i] = (body.transform.position - bodyAnchors[i].transform.position).normalized * tentDist *tentSize* 1.25f   + body.transform.position ;
+                if(j==0 && (distanceToAnchor > tentDist * tentSize * (tentTargetDist + 0.05f) || distanceToAnchor < tentDist * tentSize * 0.65f)){
+                    tentTargets[i] = (body.transform.position - bodyAnchors[i].transform.position).normalized * tentDist *tentSize* tentTargetDist   + body.transform.position ;
                 }
                 else if(j != 0){ //inverse kinematics
                     tentacles[i][j].transform.position = Vector2.MoveTowards(tentacles[i][j].transform.position, (tentacles[i][j].transform.position - tentacles[i][j-1].transform.position).normalized * tentDist + tentacles[i][j-1].transform.position, step * followSpeed);
                     // tentacles[i][j].transform.position = Vector2.MoveTowards(tentacles[i][j].transform.position, (tentacles[i][0].transform.position - bodyAnchors[i].transform.position).normalized * tentDist+ tentacles[i][j-1].transform.position, step * followSpeed);
+
                     tentacles[i][j].transform.up = Vector2.MoveTowards(tentacles[i][j].transform.up, tentacles[i][j].transform.position - tentacles[i][j-1].transform.position, step * followSpeed * 5.0f);
+                    
                 }
                 if(j==0 ){
                     tentacles[i][j].transform.position = Vector2.MoveTowards(tentacles[i][j].transform.position, tentTargets[i], step * followSpeed);
@@ -111,11 +123,12 @@ public class playerController : MonoBehaviour
 
         for(int i = 0; i < tentacles.Count; i++){
             for( int j = 0; j < tentSize; j++){
-                if(j == tentSize-1){
-                    tentacles[i][j].transform.position = Vector2.MoveTowards(tentacles[i][j].transform.position, bodyAnchors[i].transform.position, step * followSpeed * 1.5f);
+                if(j == tentSize-1 && Vector3.Distance(body.transform.position, tentacles[i][j].transform.position) >= tentDist * 1.5){
+                    tentacles[i][j].transform.position = Vector2.MoveTowards(tentacles[i][j].transform.position, (body.transform.position - bodyAnchors[i].transform.position).normalized * tentDist * firstTentDist  + bodyAnchors[i].transform.position, step * followSpeed * 1.25f);
+                    // tentacles[i][j].transform.up = Vector2.MoveTowards(tentacles[i][j].transform.up, tentacles[i][j].transform.position - body.transform.position, step * followSpeed);
                 }
-                else{
-                    tentacles[i][j].transform.position = Vector2.MoveTowards(tentacles[i][j].transform.position, (tentacles[i][j+1].transform.position - tentacles[i][j].transform.position).normalized * tentDist + tentacles[i][j+1].transform.position, step);
+                else if(j != tentSize - 1){
+                    tentacles[i][j].transform.position = Vector2.MoveTowards(tentacles[i][j].transform.position, (tentacles[i][j+1].transform.position - tentacles[i][j].transform.position).normalized * tentDist + tentacles[i][j+1].transform.position, step * forwardKinFollowSpd);
                     // tentacles[i][j].transform.position = Vector2.MoveTowards(tentacles[i][j].transform.position, tentacles[i][j+1].transform.position, step * followSpeed);
                 }
                 
