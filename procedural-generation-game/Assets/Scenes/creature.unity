@@ -200,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 53270318}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.823, y: -0.464, z: 0.016471557}
+  m_LocalPosition: {x: -0.589, y: 0.121, z: 0.016471557}
   m_LocalScale: {x: 0.18683, y: 0.18683, z: 0.18683}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -368,7 +368,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 639632703}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.191, y: -0.485, z: 0.016471557}
+  m_LocalPosition: {x: -0.591, y: -0.501, z: 0.016471557}
   m_LocalScale: {x: 0.18683, y: 0.18683, z: 0.18683}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -472,7 +472,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4d8d945fa32977c488e90230b4e5445f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -534,11 +534,11 @@ MonoBehaviour:
   - {fileID: 53270318}
   - {fileID: 639632703}
   tentPiece: {fileID: 3728473182182198468, guid: eb0b80c541dbb9640ba7fb3e05e491f9, type: 3}
-  tentSize: 1
-  tentDist: 0.3
+  tentSize: 4
+  tentDist: 0.4
   tentWidth: 0.3
-  followSpeed: 1
-  rotationSpeed: 2
+  followSpeed: 2
+  rotationSpeed: 4
 --- !u!4 &1538832464
 Transform:
   m_ObjectHideFlags: 0
