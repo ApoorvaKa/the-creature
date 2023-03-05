@@ -1,24 +1,24 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
-
+using UnityEngine;
 
 [CustomEditor(typeof(AbstractDungeonGenerator), true)]
 public class RandomDungeonGeneratorEditor : Editor
 {
     AbstractDungeonGenerator generator;
 
-    private void Awake() {
+    private void Awake()
+    {
         generator = (AbstractDungeonGenerator)target;
     }
 
-    public override void OnInspectorGUI() {
+    public override void OnInspectorGUI()
+    {
         base.OnInspectorGUI();
-        if (GUILayout.Button("Generate Dungeon")) {
+        if(GUILayout.Button("Create Dungeon"))
+        {
             generator.GenerateDungeon();
         }
     }
-
-
 }
