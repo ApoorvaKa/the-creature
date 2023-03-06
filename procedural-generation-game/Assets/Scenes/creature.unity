@@ -642,11 +642,11 @@ MonoBehaviour:
   - {fileID: 2141615988}
   - {fileID: 1811069161}
   tentPiece: {fileID: 3728473182182198468, guid: eb0b80c541dbb9640ba7fb3e05e491f9, type: 3}
-  tentSize: 15
-  tentDist: 0.2
+  tentSize: 8
+  tentDist: 0.25
   tentWidth: 0.22
-  firstTentSizeReduce: 4
-  firstTentDist: 1.6
+  firstTentSize: 0.15
+  firstTentDist: 1.9
   tentTargetDist: 1.2
   followSpeed: 4
   forwardKinFollowSpd: 2
