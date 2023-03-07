@@ -52,6 +52,7 @@ public class playerController : MonoBehaviour
             // Debug.Log(tentacles);
             numAnchor += 1;
         };
+        Physics2D.IgnoreLayerCollision(6,6);
 
     }
 
@@ -106,6 +107,7 @@ public class playerController : MonoBehaviour
 
                 if(j==0 && (distanceToAnchor > tentDist * tentSize * (tentTargetDist + 0.05f) || distanceToAnchor < tentDist * tentSize * 0.65f)){
                     tentTargets[i] = (body.transform.position - bodyAnchors[i].transform.position).normalized * tentDist *tentSize* tentTargetDist   + body.transform.position ;
+
                 }
                 else if(j != 0){ //inverse kinematics
                     tentacles[i][j].transform.position = Vector2.MoveTowards(tentacles[i][j].transform.position, (tentacles[i][j].transform.position - tentacles[i][j-1].transform.position).normalized * tentDist + tentacles[i][j-1].transform.position, step * followSpeed);
