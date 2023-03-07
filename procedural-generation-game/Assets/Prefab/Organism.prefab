@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 9213158545542593564}
   m_Layer: 0
   m_Name: Organism
-  m_TagString: Untagged
+  m_TagString: organism
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
