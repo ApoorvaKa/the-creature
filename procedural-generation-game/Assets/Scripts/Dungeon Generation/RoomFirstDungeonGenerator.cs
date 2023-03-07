@@ -9,6 +9,7 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkDungeonGenerator
 
     public int minRoomWidth = 4, minRoomHeight = 4;
     public int dungeonWidth = 20, dungeonHeight = 20;
+    public GameObject organism;
     [Range(0,10)]
     public int offset = 1;
     public bool randomWalkRooms = false;
