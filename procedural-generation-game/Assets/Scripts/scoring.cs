@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class scoring : MonoBehaviour
 {
     public int score;
-    public float timer;
+    public float timer = 0;
     public TextMeshProUGUI UIscore;
     public TextMeshProUGUI UItimer;
     private int tier = 0;
@@ -20,14 +21,19 @@ public class scoring : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer -= (int) (1 * Time.deltaTime);
+        timer += Time.deltaTime;
         UIscore.SetText("Score:" + score.ToString());
-        UItimer.SetText("Timer:" + timer.ToString());
+        UItimer.SetText("Timer:" + (60 - ((int) timer % 60)).ToString());
         if (score > nextTier)
         {
             tier++;
             nextTier += nextTier;
             //grow arm
+        }
+
+        if (((int)timer % 60) == 59) {
+            PublicVars.score = score;
+            SceneManager.LoadScene("GameOver");
         }
     }
 
