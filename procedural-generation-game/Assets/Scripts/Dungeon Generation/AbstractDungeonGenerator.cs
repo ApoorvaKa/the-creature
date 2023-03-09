@@ -14,6 +14,5 @@ public abstract class AbstractDungeonGenerator : MonoBehaviour
         tilemapVisualizer.Clear();
         RunProceduralGeneration();
     }
-
     protected abstract void RunProceduralGeneration();
 }

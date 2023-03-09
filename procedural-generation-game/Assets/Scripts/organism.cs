@@ -48,7 +48,7 @@ public class organism : MonoBehaviour
         int number = (int) (speed * speed);
         if(collision.gameObject.CompareTag("Player"))
         {
-            player.GetComponent<scoring>().Scored(number);
+            player.GetComponent<scoring>().Scored(10);
             //collision.gameObject.GetComponent<scoring>().Scored(number);
             Destroy(gameObject);
 
